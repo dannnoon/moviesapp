@@ -8,7 +8,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
-import pl.dkd.movieapp.ui.theme.MovieAppTheme
+import pl.dkd.movieapp.presentation.movies.screen.moviefilters.MovieFiltersScreen
+import pl.dkd.movieapp.presentation.movies.screen.movies.MoviesScreen
+import pl.dkd.movieapp.presentation.common.theme.MovieAppTheme
 
 @Serializable
 object Movies
@@ -24,8 +26,8 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             MovieAppTheme {
                 NavHost(navController, startDestination = Movies) {
-                    composable<Movies> { }
-                    composable<Filters> { }
+                    composable<Movies> { MoviesScreen() }
+                    composable<Filters> { MovieFiltersScreen() }
                 }
             }
         }

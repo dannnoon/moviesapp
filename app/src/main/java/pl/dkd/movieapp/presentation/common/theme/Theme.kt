@@ -1,4 +1,4 @@
-package pl.dkd.movieapp.ui.theme
+package pl.dkd.movieapp.presentation.common.theme
 
 import android.app.Activity
 import android.os.Build
