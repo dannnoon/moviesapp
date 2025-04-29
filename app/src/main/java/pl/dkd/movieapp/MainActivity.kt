@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.serialization.Serializable
 import pl.dkd.movieapp.presentation.movies.screen.moviefilters.MovieFiltersScreen
 import pl.dkd.movieapp.presentation.movies.screen.movies.MoviesScreen
@@ -18,6 +19,7 @@ object Movies
 @Serializable
 object Filters
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

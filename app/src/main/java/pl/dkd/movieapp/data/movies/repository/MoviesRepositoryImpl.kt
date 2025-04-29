@@ -1,11 +1,12 @@
 package pl.dkd.movieapp.data.movies.repository
 
+import jakarta.inject.Inject
 import pl.dkd.movieapp.domain.movies.model.Movie
 import pl.dkd.movieapp.domain.movies.model.MovieDetails
 import pl.dkd.movieapp.domain.movies.model.MovieGenre
 import pl.dkd.movieapp.domain.movies.repository.MoviesRepository
 
-class MoviesRepositoryImpl : MoviesRepository {
+class MoviesRepositoryImpl @Inject constructor() : MoviesRepository {
     override suspend fun getMovieGenreList(): List<MovieGenre> {
         TODO("Not yet implemented")
     }
