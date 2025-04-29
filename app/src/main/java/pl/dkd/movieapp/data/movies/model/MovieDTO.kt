@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieDTO(
+    val id: Int,
     val title: String,
     @SerialName("poster_path") val posterUrl: String,
     @SerialName("vote_average") val rating: Double

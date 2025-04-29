@@ -16,15 +16,18 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 @Retention(AnnotationRetention.BINARY)
 annotation class MoviesApi
 
+
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Provides
     @MoviesApi
-    fun provideMoviesRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/3")
+    fun provideMoviesRetrofit(@MoviesApi okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(
-            Json.asConverterFactory(
+            json.asConverterFactory(
                 MediaType.get("application/json; charset=UTF8")
             )
         )
