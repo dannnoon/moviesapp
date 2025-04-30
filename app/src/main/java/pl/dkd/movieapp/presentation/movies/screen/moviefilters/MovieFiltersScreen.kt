@@ -39,8 +39,7 @@ import pl.dkd.movieapp.presentation.movies.screen.moviefilters.model.MovieGenres
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieFiltersScreen(
-    viewModel: MovieFiltersScreenViewModel,
-    onNavigateBack: (selectedGenreId: Int?) -> Unit
+    viewModel: MovieFiltersScreenViewModel, onNavigateBack: (selectedGenreId: Int?) -> Unit
 ) {
     val movieGenresListState by viewModel.genreList.collectAsStateWithLifecycle()
     val selectedGenreId by viewModel.selectedGenreId.collectAsStateWithLifecycle()
@@ -50,16 +49,14 @@ fun MovieFiltersScreen(
 
             title = {
                 Text(stringResource(R.string.movie_filters_title))
-            },
-            navigationIcon = {
+            }, navigationIcon = {
                 IconButton(onClick = { onNavigateBack(selectedGenreId) }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Localized description"
                     )
                 }
-            }
-        )
+            })
     }) {
         when (movieGenresListState) {
             MovieGenresListState.Loading -> LoadingView()
@@ -78,8 +75,7 @@ private fun LoadingView() {
     Box(
         Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
-        contentAlignment = Alignment.Center
+            .fillMaxHeight(), contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator()
     }
@@ -131,13 +127,10 @@ fun MovieGenresListPreview() {
             MovieGenresListState.Loaded(
                 listOf(
                     MovieGenre(0, "Horror"), MovieGenre(
-                        1,
-                        "Action"
+                        1, "Action"
                     )
                 )
-            ),
-            0,
-            PaddingValues()
+            ), 0, PaddingValues()
         ) {}
     }
 }

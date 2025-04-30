@@ -49,4 +49,10 @@ class MoviesScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun changeSelectedGenreId(selectedGenreId: Int?) {
+        viewModelScope.launch {
+            _selectedGenre.emit(selectedGenreId)
+        }
+    }
 }
