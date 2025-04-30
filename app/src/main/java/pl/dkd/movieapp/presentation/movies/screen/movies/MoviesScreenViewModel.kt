@@ -18,13 +18,14 @@ import pl.dkd.movieapp.presentation.movies.screen.movies.model.MovieItemData
 import pl.dkd.movieapp.presentation.movies.screen.movies.model.MovieListState
 
 @HiltViewModel
-class MoviesScreenViewModel @Inject constructor(private val moviesRepository: MoviesRepository) :
-    ViewModel() {
-    private val _selectedGenre: StateFlow<Int?> = MutableStateFlow(null)
+class MoviesScreenViewModel @Inject constructor(
+    private val moviesRepository: MoviesRepository
+) : ViewModel() {
+    private val _selectedGenre: MutableStateFlow<Int?> = MutableStateFlow(null)
+    val selectedGenre: StateFlow<Int?> = _selectedGenre
     private val _movieListState: MutableStateFlow<MovieListState> =
         MutableStateFlow(MovieListState.Loading)
     val movieListState: StateFlow<MovieListState> = _movieListState
-
 
     init {
         viewModelScope.launch {
