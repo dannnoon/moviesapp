@@ -33,7 +33,6 @@ class MoviesScreenViewModel @Inject constructor(private val moviesRepository: Mo
                     _movieListState.emit(MovieListState.Loading)
                     val movies = moviesRepository.getMovieList(selectedGenreId)
 
-
                     val deferredMovieItemDataList = movies.asFlow().map {
                         async {
                             val details = moviesRepository.getMovieDetails(it.id)

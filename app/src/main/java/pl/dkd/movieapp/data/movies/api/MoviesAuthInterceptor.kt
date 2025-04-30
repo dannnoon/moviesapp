@@ -6,7 +6,7 @@ import pl.dkd.movieapp.BuildConfig
 
 class MoviesAuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        val authorizedUrl = chain.request().url()
+        val authorizedUrl = chain.request().url
             .newBuilder()
             .addQueryParameter("api_key", BuildConfig.MOVIES_API_KEY)
             .build()

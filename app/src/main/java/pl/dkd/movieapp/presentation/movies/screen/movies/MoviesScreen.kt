@@ -1,8 +1,10 @@
 package pl.dkd.movieapp.presentation.movies.screen.movies
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -16,10 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import pl.dkd.movieapp.R
 import pl.dkd.movieapp.presentation.movies.screen.movies.model.MovieListState
+import pl.dkd.movieapp.presentation.movies.screen.movies.view.MovieGridItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +35,7 @@ fun MoviesScreen(viewModel: MoviesScreenViewModel) {
             TopAppBar(
                 title = {
                     Text(
-                        "Movies",
+                        stringResource(R.string.movies_title),
                         style = MaterialTheme.typography.headlineMedium
                     )
                 }
@@ -39,12 +43,24 @@ fun MoviesScreen(viewModel: MoviesScreenViewModel) {
         }
     ) {
         when (movieItemList) {
-            MovieListState.Loading -> Box(contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-
-            is MovieListState.Loaded -> MoviesGridView(movieItemList as MovieListState.Loaded, it)
+            is MovieListState.Loading -> LoadingView()
+            is MovieListState.Loaded -> MoviesGridView(
+                movieItemList as MovieListState.Loaded,
+                it
+            )
         }
+    }
+}
+
+@Composable
+private fun LoadingView() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
     }
 }
 
@@ -54,14 +70,14 @@ private fun MoviesGridView(loadedState: MovieListState.Loaded, innerPadding: Pad
         modifier = Modifier.padding(innerPadding),
         columns = GridCells.Fixed(3),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(
             loadedState.movieItemDataList.size,
             itemContent = {
                 val movie = loadedState.movieItemDataList[it]
-                Column {
-                    Text(movie.movie.title, style = MaterialTheme.typography.titleMedium)
-                }
+                MovieGridItem(movie)
             }
         )
     }

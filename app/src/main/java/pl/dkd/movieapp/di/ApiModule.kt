@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Qualifier
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import pl.dkd.movieapp.data.movies.api.MoviesAuthInterceptor
 import retrofit2.Retrofit
@@ -28,7 +28,7 @@ object ApiModule {
         .baseUrl("https://api.themoviedb.org/3/")
         .addConverterFactory(
             json.asConverterFactory(
-                MediaType.get("application/json; charset=UTF8")
+                "application/json; charset=UTF8".toMediaType()
             )
         )
         .client(okHttpClient)
