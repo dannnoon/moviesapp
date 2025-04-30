@@ -12,18 +12,18 @@ import pl.dkd.movieapp.domain.movies.repository.MoviesRepository
 
 class MoviesRepositoryImpl @Inject constructor(private val moviesApi: MoviesApiDataSource) :
     MoviesRepository {
-    override suspend fun getMovieGenreList(): List<MovieGenre> {
+    override suspend fun getMovieGenreList(): List<MovieGenre> = withContext(Dispatchers.IO) {
         val genreDtoList = moviesApi.fetchGenreList()
-        return genreDtoList.genres.map { it.toDomain() }
+        genreDtoList.genres.map { it.toDomain() }
     }
 
-    override suspend fun getMovieList(genreId: Int?): List<Movie> {
+    override suspend fun getMovieList(genreId: Int?): List<Movie> = withContext(Dispatchers.IO) {
         val movieDtoList = moviesApi.fetchMovieList(genreId)
-        return movieDtoList.results.map { it.toDomain() }
+        movieDtoList.results.map { it.toDomain() }
     }
 
-    override suspend fun getMovieDetails(id: Int): MovieDetails {
+    override suspend fun getMovieDetails(id: Int): MovieDetails = withContext(Dispatchers.IO) {
         val movieDetailsDto = moviesApi.fetchMovieDetails(id)
-        return movieDetailsDto.toDomain()
+        movieDetailsDto.toDomain()
     }
 }
