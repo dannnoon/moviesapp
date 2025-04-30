@@ -6,4 +6,6 @@ sealed class MovieListState {
     data class Loaded(
         val movieItemDataList: List<MovieItemData>
     ) : MovieListState()
+
+    data object ConnectionError : MovieListState()
 }

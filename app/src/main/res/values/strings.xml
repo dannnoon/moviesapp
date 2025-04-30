@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MovieApp</string>
     <string name="movies_title">Movies</string>
+    <string name="movies_connection_error">Fetching movies data failed. Please check you connection and try again.</string>
+    <string name="movies_connection_error_action">Try again</string>
     <string name="movies_item_rating">Rating</string>
     <string name="movies_item_revenue">Revenue</string>
     <string name="movies_item_budget">Budget</string>

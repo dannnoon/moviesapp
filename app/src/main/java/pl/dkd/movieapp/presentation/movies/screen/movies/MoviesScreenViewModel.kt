@@ -6,6 +6,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asFlow
@@ -29,30 +31,44 @@ class MoviesScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            try {
-                _selectedGenre.collectLatest { selectedGenreId ->
-                    _movieListState.emit(MovieListState.Loading)
-                    val movies = moviesRepository.getMovieList(selectedGenreId)
-
-                    val deferredMovieItemDataList = movies.asFlow().map {
-                        async {
-                            val details = moviesRepository.getMovieDetails(it.id)
-                            MovieItemData(it, details)
-                        }
-                    }.toList()
-
-                    val movieItemDataList = deferredMovieItemDataList.awaitAll()
-                    _movieListState.emit(MovieListState.Loaded(movieItemDataList))
-                }
-            } catch (e: Exception) {
-                println(e)
+            _selectedGenre.collectLatest { selectedGenreId ->
+                fetchMoviesData(selectedGenreId)
             }
         }
     }
 
+
     fun changeSelectedGenreId(selectedGenreId: Int?) {
         viewModelScope.launch {
             _selectedGenre.emit(selectedGenreId)
+        }
+    }
+
+    fun reloadData() {
+        viewModelScope.launch {
+            fetchMoviesData(_selectedGenre.value)
+        }
+    }
+
+    private suspend fun fetchMoviesData(selectedGenreId: Int?) {
+        coroutineScope {
+            try {
+                _movieListState.emit(MovieListState.Loading)
+                delay(1000)
+                val movies = moviesRepository.getMovieList(selectedGenreId)
+
+                val deferredMovieItemDataList = movies.asFlow().map {
+                    async {
+                        val details = moviesRepository.getMovieDetails(it.id)
+                        MovieItemData(it, details)
+                    }
+                }.toList()
+
+                val movieItemDataList = deferredMovieItemDataList.awaitAll()
+                _movieListState.emit(MovieListState.Loaded(movieItemDataList))
+            } catch (e: Exception) {
+                _movieListState.emit(MovieListState.ConnectionError)
+            }
         }
     }
 }
