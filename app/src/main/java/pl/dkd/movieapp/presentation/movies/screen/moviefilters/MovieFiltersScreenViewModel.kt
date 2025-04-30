@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import pl.dkd.movieapp.Filters
 import pl.dkd.movieapp.domain.movies.repository.MoviesRepository
+import pl.dkd.movieapp.presentation.movies.screen.moviefilters.model.MovieGenreFilterItem
 import pl.dkd.movieapp.presentation.movies.screen.moviefilters.model.MovieGenresListState
 
 @HiltViewModel
@@ -30,7 +31,10 @@ class MovieFiltersScreenViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val genres = moviesRepository.getMovieGenreList()
-            val state = MovieGenresListState.Loaded(genres)
+            val filterItems: List<MovieGenreFilterItem> = listOf(
+                MovieGenreFilterItem.AllFilters
+            ) + genres.map { MovieGenreFilterItem.SingleFilter.fromMovieGenre(it) }
+            val state = MovieGenresListState.Loaded(filterItems)
             _genreList.emit(state)
         }
     }

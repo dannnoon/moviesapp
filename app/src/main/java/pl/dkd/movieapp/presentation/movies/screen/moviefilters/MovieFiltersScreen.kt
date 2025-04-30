@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pl.dkd.movieapp.R
-import pl.dkd.movieapp.domain.movies.model.MovieGenre
+import pl.dkd.movieapp.presentation.movies.screen.moviefilters.model.MovieGenreFilterItem
 import pl.dkd.movieapp.presentation.movies.screen.moviefilters.model.MovieGenresListState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,21 +94,25 @@ fun MovieGenresList(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(state.genreList.size) {
-            val genre = state.genreList[it]
+            val filter = state.genreList[it]
+            val name = when (filter) {
+                is MovieGenreFilterItem.AllFilters -> stringResource(R.string.movie_filters_all)
+                is MovieGenreFilterItem.SingleFilter -> filter.name
+            }
             Box(
                 Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(20))
-                    .background(if (genre.id == selectedGenreId) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceContainer)
+                    .background(if (filter.id == selectedGenreId) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.surfaceContainer)
                     .padding(horizontal = 8.dp, vertical = 16.dp)
-                    .clickable(onClick = { onNavigateBack(genre.id) })
+                    .clickable(onClick = { onNavigateBack(filter.id) })
             ) {
                 Text(
-                    genre.name,
+                    name,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = if (genre.id == selectedGenreId) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
+                    color = if (filter.id == selectedGenreId) MaterialTheme.colorScheme.onSecondary else MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -126,9 +130,9 @@ fun MovieGenresListPreview() {
         MovieGenresList(
             MovieGenresListState.Loaded(
                 listOf(
-                    MovieGenre(0, "Horror"), MovieGenre(
-                        1, "Action"
-                    )
+                    MovieGenreFilterItem.AllFilters,
+                    MovieGenreFilterItem.SingleFilter(0, "Horror"),
+                    MovieGenreFilterItem.SingleFilter(1, "Action"),
                 )
             ), 0, PaddingValues()
         ) {}

@@ -7,4 +7,5 @@
     <string name="movies_item_revenue">Revenue</string>
     <string name="movies_item_budget">Budget</string>
     <string name="movie_filters_title">Movie filters</string>
+    <string name="movie_filters_all">All</string>
 </resources>

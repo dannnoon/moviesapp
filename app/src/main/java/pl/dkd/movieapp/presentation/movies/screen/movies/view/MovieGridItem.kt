@@ -61,15 +61,21 @@ fun MovieGridItem(movieItemData: MovieItemData) {
                 Spacer(Modifier.weight(1.0f))
                 Text(
                     "${stringResource(R.string.movies_item_rating)}: ${movieItemData.movie.rating}",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     "${stringResource(R.string.movies_item_revenue)}: ${movieItemData.details.revenue}",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     "${stringResource(R.string.movies_item_budget)}: ${movieItemData.details.budget}",
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
