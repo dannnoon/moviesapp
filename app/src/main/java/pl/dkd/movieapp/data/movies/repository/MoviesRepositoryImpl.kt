@@ -3,6 +3,7 @@ package pl.dkd.movieapp.data.movies.repository
 import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import pl.dkd.movieapp.data.common.retry
 import pl.dkd.movieapp.data.movies.datasource.MoviesApiDataSource
 import pl.dkd.movieapp.data.movies.mapper.toDomain
 import pl.dkd.movieapp.domain.movies.model.Movie
@@ -18,7 +19,7 @@ class MoviesRepositoryImpl @Inject constructor(private val moviesApi: MoviesApiD
     }
 
     override suspend fun getMovieList(genreId: Int?): List<Movie> = withContext(Dispatchers.IO) {
-        val movieDtoList = moviesApi.fetchMovieList(genreId)
+        val movieDtoList = retry { moviesApi.fetchMovieList(genreId) }
         movieDtoList.results.map { it.toDomain() }
     }
 
